@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct Exploding_KittensApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack{
+                MainView()
+                    .modelContainer(for: Card.self)
+            }
         }
     }
 }
