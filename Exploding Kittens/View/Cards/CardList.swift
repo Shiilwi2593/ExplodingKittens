@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CardList: View {
     @StateObject private var mainVM = MainViewVM()
-    
     let columns: [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible())

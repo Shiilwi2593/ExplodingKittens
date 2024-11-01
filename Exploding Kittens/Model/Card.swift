@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftData
 
 enum CardType: Codable, Equatable {
     case exploding
@@ -75,7 +74,6 @@ enum CardType: Codable, Equatable {
     }
 }
 
-@Model
 class Card: Identifiable {
     var id: UUID
     var name: String

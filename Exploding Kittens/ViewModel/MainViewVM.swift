@@ -10,8 +10,10 @@ import SwiftData
 
 class MainViewVM: ObservableObject {
     @Published var cards: [Card] = []
+    @Published var numberOfPlayers: Int = 4
     
-    init() {
+    init(numberOfPlayers: Int = 4) {
+        self.numberOfPlayers = max(4, min(7, numberOfPlayers))
         setupDefaultCards()
     }
     
@@ -19,12 +21,10 @@ class MainViewVM: ObservableObject {
         if cards.isEmpty {
             var defaultCards: [Card] = []
             
-            // Thêm lá bài Action Attack
-            for i in 1...6 {
+            for i in 1...numberOfPlayers - 1 {
                 defaultCards.append(Card(name: "attack\(i)", type: .action(.attack), imageName: "attack\(i)"))
             }
             
-            // Thêm các lá bài Cat
             for i in 1...5 {
                 let catType: CardType.CatType
                 
@@ -37,40 +37,42 @@ class MainViewVM: ObservableObject {
                 default: continue
                 }
                 
-                // Thêm 4 lá bài Normal cho mỗi CatType
-                for _ in 1...4 {
-                    defaultCards.append(Card(name: "Normal \(i)", type: .cat(catType), imageName: "normal\(i)"))
+                for j in 1...4 {
+                    defaultCards.append(Card(name: "Normal \(catType) \(j)", type: .cat(catType), imageName: "normal\(i)"))
                 }
             }
             
-            // Thêm lá bài Defuse
-            for i in 1...7 {
+            for i in 1...numberOfPlayers {
                 defaultCards.append(Card(name: "defuse\(i)", type: .defuse, imageName: "defuse\(i)"))
             }
             
-            // Thêm lá bài Exploding
-            for i in 1...6 {
+            for i in 1...numberOfPlayers - 1 {
                 defaultCards.append(Card(name: "explode\(i)", type: .exploding, imageName: "explode\(i)"))
             }
             
-            // Thêm lá bài Nope
-            for i in 1...5 {
+            // Thêm lá bài Nope (bằng số người chơi)
+            for i in 1...numberOfPlayers {
                 defaultCards.append(Card(name: "nope\(i)", type: .action(.nope), imageName: "nope\(i)"))
             }
             
-            // Thêm lá bài See The Future
-            for i in 1...5 {
+            // Thêm lá bài See The Future (bằng số người chơi)
+            for i in 1...numberOfPlayers {
                 defaultCards.append(Card(name: "future\(i)", type: .action(.seeTheFuture), imageName: "future\(i)"))
             }
             
-            // Thêm lá bài Shuffle
-            for i in 1...4 {
+            // Thêm lá bài Shuffle (số người chơi - 1)
+            for i in 1...numberOfPlayers - 1 {
                 defaultCards.append(Card(name: "shuffle\(i)", type: .action(.shuffle), imageName: "shuffle\(i)"))
             }
             
-            // Thêm lá bài Skip
-            for i in 1...4 {
+            // Thêm lá bài Skip (số người chơi - 1)
+            for i in 1...numberOfPlayers - 1 {
                 defaultCards.append(Card(name: "skip\(i)", type: .action(.skip), imageName: "skip\(i)"))
+            }
+            
+            // Thêm lá bài Favor (số người chơi - 1)
+            for i in 1...numberOfPlayers - 1 {
+                defaultCards.append(Card(name: "favor\(i)", type: .action(.favor), imageName: "favor\(i)"))
             }
             
             // Cập nhật cards
@@ -78,5 +80,9 @@ class MainViewVM: ObservableObject {
         }
     }
     
-   
+    func resetCardsForPlayerCount(_ count: Int) {
+        numberOfPlayers = max(4, min(7, count))
+        cards.removeAll()
+        setupDefaultCards()
+    }
 }

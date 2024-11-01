@@ -8,10 +8,10 @@
 import SwiftUI
 import SwiftData
 
+
 struct MainView: View {
     @StateObject private var mainViewVM = MainViewVM()
-    @Environment(\.modelContext) private var context
-    @Query var cards: [Card]
+    @State private var showingJoinGame = false
     
     var body: some View {
         NavigationStack {
@@ -19,12 +19,9 @@ struct MainView: View {
                 Image("explodingKittensBackground")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .ignoresSafeArea()
                 
                 VStack(spacing: 25) {
-                    Button(action: {
-                        print("Create Game")
-                    }) {
+                    NavigationLink(destination: CreateGameView()) {
                         Text("Create Game")
                             .foregroundColor(.white)
                     }
@@ -34,7 +31,6 @@ struct MainView: View {
                     ))
                     
                     Button(action: {
-                        print("Join Game")
                     }) {
                         Text("Join Game")
                             .foregroundColor(.white)
@@ -55,24 +51,11 @@ struct MainView: View {
                 }
                 .padding(.horizontal, 40)
             }
-            .onAppear {
-                let viewModelCards = mainViewVM.cards
-                print("Total cards: \(viewModelCards.count)")
-                for card in viewModelCards {
-                    print("Card: \(card.name)")
-                }
-                do {
-                    try context.save()
-                } catch {
-                    print("Save error: \(error.localizedDescription)")
-                }
-            }
+            .navigationBarBackButtonHidden(true)
+           
         }
+        
     }
-}
-
-#Preview {
-    MainView()
 }
 
 

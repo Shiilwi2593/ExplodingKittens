@@ -14,7 +14,6 @@ struct Exploding_KittensApp: App {
         WindowGroup {
             NavigationStack{
                 MainView()
-                    .modelContainer(for: Card.self)
             }
         }
     }
